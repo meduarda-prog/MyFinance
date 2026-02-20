@@ -1,21 +1,13 @@
-const transactionList = document.getElementById("transaction-list");
-const balanceElement = document.getElementById("balance");
+function updateCards(totals) {
+  document.getElementById("totalReceita").textContent =
+    `R$ ${totals.income.toFixed(2)}`;
 
-function renderTransactions(transactions) {
-  transactionList.innerHTML = "";
+  document.getElementById("totalDespesa").textContent =
+    `R$ ${totals.expense.toFixed(2)}`;
 
-  transactions.forEach((transaction, index) => {
-    const li = document.createElement("li");
+  document.getElementById("saldo").textContent =
+    `R$ ${totals.balance.toFixed(2)}`;
 
-    li.innerHTML = `
-      ${transaction.description} - R$ ${transaction.amount.toFixed(2)}
-      <button onclick="removeTransaction(${index})">X</button>
-    `;
-
-    transactionList.appendChild(li);
-  });
-}
-
-function updateBalance(balance) {
-  balanceElement.textContent = balance.toFixed(2);
+  document.getElementById("percentual").textContent =
+    `${totals.percentage}%`;
 }
