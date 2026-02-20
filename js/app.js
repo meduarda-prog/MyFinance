@@ -58,7 +58,8 @@ function updateDashboard() {
   const totals = calculateMonthlyTotals(transactions);
 
   updateCards(totals);
-
+}
+function updateDashboard() {
   document.getElementById("totalReceita").textContent =
     `R$ ${totals.income.toFixed(2)}`;
 
