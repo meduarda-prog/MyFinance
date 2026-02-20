@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyFinance</title>
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>MyFinance</h1>
+
+    <form id="transaction-form">
+      <input type="text" id="description" placeholder="Descrição" required>
+      <input type="number" id="amount" placeholder="Valor (use negativo para despesa)" required>
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <div class="summary">
+      <p>Saldo: R$ <span id="balance">0.00</span></p>
+    </div>
+
+    <ul id="transaction-list"></ul>
+  </div>
+
+  <!-- JS -->
+  <script src="js/storage.js"></script>
+  <script src="js/calculations.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
