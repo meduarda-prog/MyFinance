@@ -1,12 +1,7 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial;
-}
-
 body {
-  background: #eef3fb;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
 }
 
 .app {
@@ -14,11 +9,9 @@ body {
   height: 100vh;
 }
 
-/* SIDEBAR */
-
 .sidebar {
-  width: 220px;
-  background: linear-gradient(180deg, #1e3a8a, #2563eb);
+  width: 240px;
+  background: linear-gradient(180deg, #000080, #0047ab);
   color: white;
   padding: 30px 20px;
 }
@@ -27,109 +20,89 @@ body {
   margin-bottom: 40px;
 }
 
-.menu-item {
-  padding: 12px;
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 14px;
   margin-bottom: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
-.menu-item:hover,
-.menu-item.active {
+.sidebar li:hover {
   background: rgba(255,255,255,0.2);
 }
 
-/* MAIN */
-
-.main {
+.content {
   flex: 1;
   padding: 40px;
-}
-
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
 }
 
 .cards {
   display: flex;
   gap: 20px;
-  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 .card {
   flex: 1;
+  padding: 25px;
+  border-radius: 18px;
   background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-.card h3 {
-  margin-bottom: 10px;
-  color: #555;
+.card.saldo {
+  background: #000080;
+  color: white;
 }
 
-.card p {
-  font-size: 22px;
-  font-weight: bold;
+.card.receita {
+  border-left: 6px solid #28a745;
 }
 
-.receita { color: #16a34a; }
-.despesa { color: #dc2626; }
-.saldo { color: #2563eb; }
+.card.despesa {
+  border-left: 6px solid #e83e8c;
+}
 
-/* FORM */
+.grafico-container {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
 
-input, select {
-  padding: 10px;
-  margin: 10px 5px 10px 0;
-  border-radius: 8px;
+.lista-categorias div {
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+input, select, button {
+  display: block;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 10px;
   border: 1px solid #ccc;
+  width: 300px;
 }
 
 button {
-  padding: 10px 15px;
-  background: #2563eb;
-  border: none;
+  background: #0047ab;
   color: white;
-  border-radius: 8px;
+  border: none;
   cursor: pointer;
 }
 
 button:hover {
-  background: #1e40af;
-}
-
-/* DESPESAS */
-
-.category-container {
-  display: flex;
-  gap: 30px;
-  margin-top: 30px;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.category-list {
-  flex: 1;
-}
-
-.category-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  background: #f1f5f9;
-  padding: 8px;
-  border-radius: 6px;
-}
-
-.percent {
-  color: #2563eb;
-  font-weight: bold;
+  background: #002e80;
 }
