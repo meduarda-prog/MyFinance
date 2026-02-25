@@ -4,25 +4,29 @@ function calculateMonthlyTotals(transactions) {
   let categories = {};
 
   transactions.forEach(t => {
+    const amount = Number(t.amount);
+
     if (t.type === "renda") {
-      income += t.amount;
+      income += amount;
     } else {
-      expense += t.amount;
+      expense += amount;
 
       if (!categories[t.category]) {
         categories[t.category] = 0;
       }
 
-      categories[t.category] += t.amount;
+      categories[t.category] += amount;
     }
   });
 
   const balance = income - expense;
+  const percent = income > 0 ? ((expense / income) * 100).toFixed(1) : 0;
 
   return {
     income,
     expense,
     balance,
+    percent,
     categories
   };
 }
