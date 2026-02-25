@@ -58,3 +58,38 @@ function updateDashboard() {
 
   updateCards(totals);
 }
+let chart;
+
+function updateChart(totals) {
+  const ctx = document.getElementById("grafico");
+
+  if (!ctx) return;
+
+  const categories = totals.categories;
+  const income = totals.income;
+
+  const labels = [];
+  const data = [];
+
+  for (let category in categories) {
+    const value = categories[category];
+    const percent = income > 0 ? ((value / income) * 100).toFixed(1) : 0;
+
+    labels.push(`${category} - R$${value} (${percent}%)`);
+    data.push(value);
+  }
+
+  if (chart) {
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data
+      }]
+    }
+  });
+}
