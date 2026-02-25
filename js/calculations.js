@@ -6,12 +6,14 @@ function calculateMonthlyTotals(transactions) {
     if (t.type === "renda") {
       income += t.value;
     } else {
-      expense += t.value;
+      expense += Math.abs(t.value);
     }
   });
 
   const balance = income - expense;
-  const percentage = income > 0 ? ((expense / income) * 100).toFixed(2) : 0;
+  const percentage = income > 0
+    ? ((expense / income) * 100).toFixed(2)
+    : 0;
 
   return { income, expense, balance, percentage };
 }
