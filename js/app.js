@@ -1,160 +1,91 @@
-let chartResumo;
-let chartDetalhado;
+let transacoes = JSON.parse(localStorage.getItem("transacoes")) || [];
+let grafico;
 
-document.addEventListener("DOMContentLoaded", () => {
-  initApp();
-});
-
-function initApp() {
-  document
-    .getElementById("btnAdicionar")
-    .addEventListener("click", addTransaction);
-
-  updateDashboard();
+function showTab(tabId) {
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.classList.remove("active");
+  });
+  document.getElementById(tabId).classList.add("active");
 }
 
-function addTransaction() {
-  const description = document.getElementById("descricao").value;
-  const amount = parseFloat(document.getElementById("valor").value);
-  const type = document.getElementById("tipo").value;
-  const category = document.getElementById("categoria").value || "Outros";
-
-  if (!description || isNaN(amount)) {
-    alert("Preencha corretamente!");
-    return;
-  }
-
-  const transaction = { description, amount, type, category };
-
-  const { year, month } = getCurrentYearMonth();
-  const data = getData();
-
-  if (!data[year]) data[year] = {};
-  if (!data[year][month]) data[year][month] = [];
-
-  data[year][month].push(transaction);
-  saveData(data);
-
-  document.getElementById("descricao").value = "";
-  document.getElementById("valor").value = "";
-
-  updateDashboard();
+function salvar() {
+  localStorage.setItem("transacoes", JSON.stringify(transacoes));
 }
 
-function updateDashboard() {
-  const { year, month } = getCurrentYearMonth();
-  const data = getData();
+function adicionarTransacao() {
+  const descricao = document.getElementById("descricao").value;
+  const valor = parseFloat(document.getElementById("valor").value);
+  const tipo = document.getElementById("tipo").value;
+  const categoria = document.getElementById("categoria").value || "Outros";
 
-  const transactions =
-    data[year] && data[year][month]
-      ? data[year][month]
-      : [];
+  if (!descricao || !valor) return;
 
-  const totals = calculateMonthlyTotals(transactions);
-
-  updateCards(totals);
-  updateResumoChart(totals);
-  updateDetalhadoChart(totals);
+  transacoes.push({ descricao, valor, tipo, categoria });
+  salvar();
+  atualizarDashboard();
 }
 
-function updateCards(totals) {
-  document.getElementById("totalReceita").textContent =
-    `R$ ${totals.income.toFixed(2)}`;
+function atualizarDashboard() {
+  let receitas = 0;
+  let despesas = 0;
+  let categorias = {};
 
-  document.getElementById("totalDespesa").textContent =
-    `R$ ${totals.expense.toFixed(2)}`;
-
-  document.getElementById("saldoValor").textContent =
-    `R$ ${totals.balance.toFixed(2)}`;
-
-  document.getElementById("percentual").textContent =
-    `${totals.percent}%`;
-}
-
-function updateResumoChart(totals) {
-  const ctx = document.getElementById("graficoResumo");
-  if (!ctx) return;
-
-  if (chartResumo) chartResumo.destroy();
-
-  chartResumo = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: ["Receitas", "Despesas"],
-      datasets: [{
-        data: [totals.income, totals.expense],
-        backgroundColor: ["#16a34a", "#dc2626"]
-      }]
+  transacoes.forEach(t => {
+    if (t.tipo === "receita") {
+      receitas += t.valor;
+    } else {
+      despesas += t.valor;
+      categorias[t.categoria] = (categorias[t.categoria] || 0) + t.valor;
     }
   });
+
+  const saldo = receitas - despesas;
+
+  document.getElementById("saldo").innerText = "R$ " + saldo.toFixed(2);
+  document.getElementById("receitas").innerText = "R$ " + receitas.toFixed(2);
+  document.getElementById("despesasTotal").innerText = "R$ " + despesas.toFixed(2);
+
+  atualizarGrafico(categorias, receitas);
 }
 
-function updateDetalhadoChart(totals) {
-  const ctx = document.getElementById("graficoDetalhado");
-  const lista = document.getElementById("listaCategorias");
+function atualizarGrafico(categorias, receitaTotal) {
+  const ctx = document.getElementById("graficoCategorias").getContext("2d");
+  const labels = Object.keys(categorias);
+  const valores = Object.values(categorias);
 
-  if (!ctx || !lista) return;
+  if (grafico) grafico.destroy();
 
-  if (chartDetalhado) chartDetalhado.destroy();
-
-  const categories = totals.categories;
-  const income = totals.income;
-
-  const labels = [];
-  const data = [];
-
-  lista.innerHTML = "";
-
-  for (let category in categories) {
-    const value = categories[category];
-    const percent =
-      income > 0 ? ((value / income) * 100).toFixed(1) : 0;
-
-    labels.push(category);
-    data.push(value);
-
-    lista.innerHTML += `
-      <div class="category-item">
-        <span>${category}</span>
-        <span>
-          R$ ${value.toFixed(2)}
-          <span class="percent">(${percent}%)</span>
-        </span>
-      </div>
-    `;
-  }
-
-  chartDetalhado = new Chart(ctx, {
+  grafico = new Chart(ctx, {
     type: "doughnut",
     data: {
       labels: labels,
       datasets: [{
-        data: data,
+        data: valores,
         backgroundColor: [
-          "#2563eb",
-          "#1d4ed8",
-          "#3b82f6",
-          "#60a5fa",
-          "#93c5fd"
+          "#0047ab",
+          "#28a745",
+          "#e83e8c",
+          "#ffc107",
+          "#17a2b8",
+          "#6f42c1"
         ]
       }]
-    },
-    options: {
-      plugins: { legend: { display: false } }
     }
+  });
+
+  const lista = document.getElementById("listaCategorias");
+  lista.innerHTML = "";
+
+  labels.forEach((cat, i) => {
+    const porcentagem = receitaTotal > 0
+      ? ((valores[i] / receitaTotal) * 100).toFixed(1)
+      : 0;
+
+    lista.innerHTML +=
+      "<div><strong>" + cat + "</strong> - R$ " +
+      valores[i].toFixed(2) +
+      " (" + porcentagem + "%)</div>";
   });
 }
 
-function showSection(id) {
-
-  document.querySelectorAll(".section").forEach(sec =>
-    sec.classList.remove("active")
-  );
-
-  document.querySelectorAll(".menu-item").forEach(item =>
-    item.classList.remove("active")
-  );
-
-  document.getElementById(id).classList.add("active");
-  event.target.classList.add("active");
-}
+atualizarDashboard();
