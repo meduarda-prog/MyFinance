@@ -2,117 +2,78 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <title>Dashboard Financeiro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyFinance</title>
-
-  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="app">
 
-  <!-- MENU LATERAL -->
-  <div class="sidebar">
-    <h2>MyFinance</h2>
+  <aside class="sidebar">
+    <h2>Financeiro</h2>
+    <ul>
+      <li onclick="showTab('dashboard')">🏠 Saldo</li>
+      <li onclick="showTab('transacoes')">💳 Transações</li>
+      <li onclick="showTab('despesas')">📊 Despesas</li>
+      <li onclick="showTab('config')">⚙ Configurações</li>
+    </ul>
+  </aside>
 
-    <div class="menu-item active" onclick="showSection('saldo')">
-      Saldo
-    </div>
+  <main class="content">
 
-    <div class="menu-item" onclick="showSection('transacoes')">
-      Transações
-    </div>
-
-    <div class="menu-item" onclick="showSection('despesas')">
-      Despesas
-    </div>
-
-    <div class="menu-item" onclick="showSection('config')">
-      Configurações
-    </div>
-  </div>
-
-  <!-- CONTEÚDO -->
-  <div class="main">
-
-    <!-- SALDO -->
-    <div id="saldo" class="section active">
-
-      <h1>Painel Financeiro</h1>
-
+    <section id="dashboard" class="tab active">
       <div class="cards">
-        <div class="card">
+        <div class="card saldo">
+          <h3>Saldo Atual</h3>
+          <p id="saldo">R$ 0,00</p>
+        </div>
+
+        <div class="card receita">
           <h3>Receitas</h3>
-          <p id="totalReceita" class="receita">R$ 0.00</p>
+          <p id="receitas">R$ 0,00</p>
         </div>
 
-        <div class="card">
+        <div class="card despesa">
           <h3>Despesas</h3>
-          <p id="totalDespesa" class="despesa">R$ 0.00</p>
-        </div>
-
-        <div class="card">
-          <h3>Saldo</h3>
-          <p id="saldoValor" class="saldo">R$ 0.00</p>
-        </div>
-
-        <div class="card">
-          <h3>% Gasto</h3>
-          <p id="percentual">0%</p>
+          <p id="despesasTotal">R$ 0,00</p>
         </div>
       </div>
 
-    </div>
+      <div class="grafico-container">
+        <div class="grafico">
+          <canvas id="graficoCategorias"></canvas>
+        </div>
+        <div id="listaCategorias" class="lista-categorias"></div>
+      </div>
+    </section>
 
-    <!-- TRANSAÇÕES -->
-    <div id="transacoes" class="section">
-
+    <section id="transacoes" class="tab">
       <h2>Nova Transação</h2>
-
       <input type="text" id="descricao" placeholder="Descrição">
       <input type="number" id="valor" placeholder="Valor">
-
       <select id="tipo">
-        <option value="renda">Renda</option>
+        <option value="receita">Receita</option>
         <option value="despesa">Despesa</option>
       </select>
+      <input type="text" id="categoria" placeholder="Categoria (ex: Alimentação)">
+      <button onclick="adicionarTransacao()">Adicionar</button>
+    </section>
 
-      <select id="categoria">
-        <option value="Salário">Salário</option>
-        <option value="Alimentação">Alimentação</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Outros">Outros</option>
-      </select>
+    <section id="despesas" class="tab">
+      <h2>Despesas do Ano</h2>
+      <canvas id="graficoAnual"></canvas>
+    </section>
 
-      <button id="btnAdicionar">Adicionar</button>
-
-    </div>
-
-    <!-- DESPESAS -->
-    <div id="despesas" class="section">
-
-      <h2>Despesas por Categoria</h2>
-
-      <div class="category-container">
-        <canvas id="grafico"></canvas>
-        <div id="listaCategorias" class="category-list"></div>
-      </div>
-
-    </div>
-
-    <!-- CONFIGURAÇÕES -->
-    <div id="config" class="section">
+    <section id="config" class="tab">
       <h2>Configurações</h2>
-      <p>Em breve...</p>
-    </div>
+      <p>Em desenvolvimento</p>
+    </section>
 
-  </div>
+  </main>
 </div>
 
-<script src="js/storage.js"></script>
-<script src="js/calculations.js"></script>
-<script src="js/app.js"></script>
-
+<script src="app.js"></script>
 </body>
 </html>
