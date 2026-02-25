@@ -1,4 +1,5 @@
-let chart;
+let chartResumo;
+let chartDetalhado;
 
 document.addEventListener("DOMContentLoaded", () => {
   initApp();
@@ -12,6 +13,8 @@ function initApp() {
   updateDashboard();
 }
 
+/* ---------------- ADICIONAR TRANSAÇÃO ---------------- */
+
 function addTransaction() {
   const description = document.getElementById("descricao").value;
   const amount = parseFloat(document.getElementById("valor").value);
@@ -23,12 +26,7 @@ function addTransaction() {
     return;
   }
 
-  const transaction = {
-    description,
-    amount,
-    type,
-    category
-  };
+  const transaction = { description, amount, type, category };
 
   const { year, month } = getCurrentYearMonth();
   const data = getData();
@@ -45,6 +43,8 @@ function addTransaction() {
   updateDashboard();
 }
 
+/* ---------------- ATUALIZAR DASHBOARD ---------------- */
+
 function updateDashboard() {
   const { year, month } = getCurrentYearMonth();
   const data = getData();
@@ -57,8 +57,11 @@ function updateDashboard() {
   const totals = calculateMonthlyTotals(transactions);
 
   updateCards(totals);
-  updateChart(totals);
+  updateResumoChart(totals);
+  updateDetalhadoChart(totals);
 }
+
+/* ---------------- CARDS ---------------- */
 
 function updateCards(totals) {
   document.getElementById("totalReceita").textContent =
@@ -67,18 +70,42 @@ function updateCards(totals) {
   document.getElementById("totalDespesa").textContent =
     `R$ ${totals.expense.toFixed(2)}`;
 
-  document.getElementById("saldo").textContent =
+  document.getElementById("saldoValor").textContent =
     `R$ ${totals.balance.toFixed(2)}`;
 
   document.getElementById("percentual").textContent =
     `${totals.percent}%`;
 }
 
-function updateChart(totals) {
-  const ctx = document.getElementById("grafico");
+/* ---------------- GRÁFICO RESUMO (TELA INICIAL) ---------------- */
+
+function updateResumoChart(totals) {
+  const ctx = document.getElementById("graficoResumo");
+  if (!ctx) return;
+
+  if (chartResumo) chartResumo.destroy();
+
+  chartResumo = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Receitas", "Despesas"],
+      datasets: [{
+        data: [totals.income, totals.expense],
+        backgroundColor: ["#16a34a", "#dc2626"]
+      }]
+    }
+  });
+}
+
+/* ---------------- GRÁFICO DETALHADO (ABA DESPESAS) ---------------- */
+
+function updateDetalhadoChart(totals) {
+  const ctx = document.getElementById("graficoDetalhado");
   const lista = document.getElementById("listaCategorias");
 
   if (!ctx || !lista) return;
+
+  if (chartDetalhado) chartDetalhado.destroy();
 
   const categories = totals.categories;
   const income = totals.income;
@@ -107,9 +134,7 @@ function updateChart(totals) {
     `;
   }
 
-  if (chart) chart.destroy();
-
-  chart = new Chart(ctx, {
+  chartDetalhado = new Chart(ctx, {
     type: "doughnut",
     data: {
       labels: labels,
@@ -125,25 +150,23 @@ function updateChart(totals) {
       }]
     },
     options: {
-      plugins: {
-        legend: {
-          display: false
-        }
-      }
+      plugins: { legend: { display: false } }
     }
   });
 }
+
+/* ---------------- MENU ---------------- */
+
 function showSection(id) {
 
-  document.querySelectorAll(".section").forEach(sec => {
-    sec.classList.remove("active");
-  });
+  document.querySelectorAll(".section").forEach(sec =>
+    sec.classList.remove("active")
+  );
 
-  document.querySelectorAll(".menu-item").forEach(item => {
-    item.classList.remove("active");
-  });
+  document.querySelectorAll(".menu-item").forEach(item =>
+    item.classList.remove("active")
+  );
 
   document.getElementById(id).classList.add("active");
-
   event.target.classList.add("active");
 }
