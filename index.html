@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyFinance</title>
+
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -11,40 +12,64 @@
 
 <div class="app">
 
+  <!-- MENU LATERAL -->
   <div class="sidebar">
     <h2>MyFinance</h2>
-    <button>Dashboard</button>
+
+    <div class="menu-item active" onclick="showSection('saldo')">
+      Saldo
+    </div>
+
+    <div class="menu-item" onclick="showSection('transacoes')">
+      Transações
+    </div>
+
+    <div class="menu-item" onclick="showSection('despesas')">
+      Despesas
+    </div>
+
+    <div class="menu-item" onclick="showSection('config')">
+      Configurações
+    </div>
   </div>
 
+  <!-- CONTEÚDO -->
   <div class="main">
 
-    <div class="topbar">
+    <!-- SALDO -->
+    <div id="saldo" class="section active">
+
       <h1>Painel Financeiro</h1>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Receitas</h3>
+          <p id="totalReceita" class="receita">R$ 0.00</p>
+        </div>
+
+        <div class="card">
+          <h3>Despesas</h3>
+          <p id="totalDespesa" class="despesa">R$ 0.00</p>
+        </div>
+
+        <div class="card">
+          <h3>Saldo</h3>
+          <p id="saldoValor" class="saldo">R$ 0.00</p>
+        </div>
+
+        <div class="card">
+          <h3>% Gasto</h3>
+          <p id="percentual">0%</p>
+        </div>
+      </div>
+
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>Receitas</h3>
-        <p id="totalReceita">R$ 0.00</p>
-      </div>
+    <!-- TRANSAÇÕES -->
+    <div id="transacoes" class="section">
 
-      <div class="card">
-        <h3>Despesas</h3>
-        <p id="totalDespesa">R$ 0.00</p>
-      </div>
+      <h2>Nova Transação</h2>
 
-      <div class="card">
-        <h3>Saldo</h3>
-        <p id="saldo">R$ 0.00</p>
-      </div>
-
-      <div class="card">
-        <h3>% Gasto</h3>
-        <p id="percentual">0%</p>
-      </div>
-    </div>
-
-    <div style="margin-top: 30px;">
       <input type="text" id="descricao" placeholder="Descrição">
       <input type="number" id="valor" placeholder="Valor">
 
@@ -54,19 +79,32 @@
       </select>
 
       <select id="categoria">
-        <option value="salario">Salário</option>
-        <option value="alimentacao">Alimentação</option>
-        <option value="transporte">Transporte</option>
-        <option value="outros">Outros</option>
+        <option value="Salário">Salário</option>
+        <option value="Alimentação">Alimentação</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Outros">Outros</option>
       </select>
 
       <button id="btnAdicionar">Adicionar</button>
-      <div class="grafico-container">
 
-  <h2>Despesas por Categoria</h2>
+    </div>
 
-  <canvas id="graficoDespesas"></canvas>
+    <!-- DESPESAS -->
+    <div id="despesas" class="section">
 
+      <h2>Despesas por Categoria</h2>
+
+      <div class="category-container">
+        <canvas id="grafico"></canvas>
+        <div id="listaCategorias" class="category-list"></div>
+      </div>
+
+    </div>
+
+    <!-- CONFIGURAÇÕES -->
+    <div id="config" class="section">
+      <h2>Configurações</h2>
+      <p>Em breve...</p>
     </div>
 
   </div>
@@ -74,7 +112,6 @@
 
 <script src="js/storage.js"></script>
 <script src="js/calculations.js"></script>
-<script src="js/ui.js"></script>
 <script src="js/app.js"></script>
 
 </body>
