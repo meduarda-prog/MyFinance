@@ -13,8 +13,6 @@ function initApp() {
   updateDashboard();
 }
 
-/* ---------------- ADICIONAR TRANSAÇÃO ---------------- */
-
 function addTransaction() {
   const description = document.getElementById("descricao").value;
   const amount = parseFloat(document.getElementById("valor").value);
@@ -43,8 +41,6 @@ function addTransaction() {
   updateDashboard();
 }
 
-/* ---------------- ATUALIZAR DASHBOARD ---------------- */
-
 function updateDashboard() {
   const { year, month } = getCurrentYearMonth();
   const data = getData();
@@ -61,8 +57,6 @@ function updateDashboard() {
   updateDetalhadoChart(totals);
 }
 
-/* ---------------- CARDS ---------------- */
-
 function updateCards(totals) {
   document.getElementById("totalReceita").textContent =
     `R$ ${totals.income.toFixed(2)}`;
@@ -76,8 +70,6 @@ function updateCards(totals) {
   document.getElementById("percentual").textContent =
     `${totals.percent}%`;
 }
-
-/* ---------------- GRÁFICO RESUMO (TELA INICIAL) ---------------- */
 
 function updateResumoChart(totals) {
   const ctx = document.getElementById("graficoResumo");
@@ -96,8 +88,6 @@ function updateResumoChart(totals) {
     }
   });
 }
-
-/* ---------------- GRÁFICO DETALHADO (ABA DESPESAS) ---------------- */
 
 function updateDetalhadoChart(totals) {
   const ctx = document.getElementById("graficoDetalhado");
@@ -154,8 +144,6 @@ function updateDetalhadoChart(totals) {
     }
   });
 }
-
-/* ---------------- MENU ---------------- */
 
 function showSection(id) {
 
