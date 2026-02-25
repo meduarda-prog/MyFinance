@@ -15,15 +15,14 @@ function handleAddTransaction() {
   const type = document.getElementById("tipo").value;
   const category = document.getElementById("categoria").value;
 
-  if (!description || !value) {
-    alert("Preencha todos os campos");
+  if (!description || isNaN(value)) {
+    alert("Preencha todos os campos corretamente");
     return;
   }
 
   const { year, month } = getCurrentYearMonth();
   const data = getData();
 
-  // Criar estrutura se não existir
   if (!data[year]) data[year] = {};
   if (!data[year][month]) data[year][month] = [];
 
@@ -58,17 +57,4 @@ function updateDashboard() {
   const totals = calculateMonthlyTotals(transactions);
 
   updateCards(totals);
-}
-function updateDashboard() {
-  document.getElementById("totalReceita").textContent =
-    `R$ ${totals.income.toFixed(2)}`;
-
-  document.getElementById("totalDespesa").textContent =
-    `R$ ${totals.expense.toFixed(2)}`;
-
-  document.getElementById("saldo").textContent =
-    `R$ ${totals.balance.toFixed(2)}`;
-
-  document.getElementById("percentual").textContent =
-    `${totals.percentage}%`;
 }
