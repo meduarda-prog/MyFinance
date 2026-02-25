@@ -93,3 +93,17 @@ function updateChart(totals) {
     }
   });
 }
+function updateDashboard() {
+  const { year, month } = getCurrentYearMonth();
+  const data = getData();
+
+  const transactions =
+    data[year] && data[year][month]
+      ? data[year][month]
+      : [];
+
+  const totals = calculateMonthlyTotals(transactions);
+
+  updateCards(totals);
+  updateChart(totals); // <- AQUI
+}
