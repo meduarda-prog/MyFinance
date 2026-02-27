@@ -146,6 +146,4 @@ button:hover {
 .tab.active {
   display: block;
 }
-body {
-  background: red;
-}
+
