@@ -1,71 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Financeiro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>MyFinance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/main.css" />
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="app">
 
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <h2>Financeiro</h2>
-    <ul>
-      <li onclick="showTab('dashboard')">🏠 Saldo</li>
-      <li onclick="showTab('transacoes')">💳 Transações</li>
-      <li onclick="showTab('despesas')">📊 Despesas</li>
-      <li onclick="showTab('config')">⚙ Configurações</li>
-    </ul>
+    <h1 class="logo">MyFinance</h1>
+
+    <nav>
+      <button class="nav-item active" onclick="showTab('dashboard')">💰 Saldo</button>
+      <button class="nav-item" onclick="showTab('transacoes')">💳 Transações</button>
+      <button class="nav-item" onclick="showTab('despesas')">📊 Despesas</button>
+      <button class="nav-item" onclick="showTab('config')">⚙️ Configurações</button>
+    </nav>
   </aside>
 
+  <!-- CONTEÚDO -->
   <main class="content">
 
+    <!-- DASHBOARD -->
     <section id="dashboard" class="tab active">
+      <h2 class="titulo-mes">Mês atual</h2>
+
       <div class="cards">
         <div class="card saldo">
-          <h3>Saldo Atual</h3>
-          <p id="saldo">R$ 0,00</p>
+          <span>Saldo</span>
+          <strong id="saldo">R$ 0,00</strong>
         </div>
 
         <div class="card receita">
-          <h3>Receitas</h3>
-          <p id="receitas">R$ 0,00</p>
+          <span>Receitas</span>
+          <strong id="receitas">R$ 0,00</strong>
         </div>
 
         <div class="card despesa">
-          <h3>Despesas</h3>
-          <p id="despesasTotal">R$ 0,00</p>
+          <span>Despesas</span>
+          <strong id="despesasTotal">R$ 0,00</strong>
         </div>
       </div>
 
-      <div class="grafico-container">
-        <div class="grafico">
+      <div class="painel">
+        <div class="grafico-box">
+          <h3>Despesas por categoria</h3>
           <canvas id="graficoCategorias"></canvas>
         </div>
-        <div id="listaCategorias" class="lista-categorias"></div>
+
+        <div class="lista-box">
+          <h3>Resumo</h3>
+          <div id="listaCategorias"></div>
+        </div>
       </div>
     </section>
 
+    <!-- TRANSAÇÕES -->
     <section id="transacoes" class="tab">
       <h2>Nova Transação</h2>
-      <input type="text" id="descricao" placeholder="Descrição">
-      <input type="number" id="valor" placeholder="Valor">
-      <select id="tipo">
-        <option value="receita">Receita</option>
-        <option value="despesa">Despesa</option>
-      </select>
-      <input type="text" id="categoria" placeholder="Categoria (ex: Alimentação)">
-      <button onclick="adicionarTransacao()">Adicionar</button>
+
+      <div class="form">
+        <input id="descricao" placeholder="Descrição" />
+        <input id="valor" type="number" placeholder="Valor" />
+        <select id="tipo">
+          <option value="receita">Receita</option>
+          <option value="despesa">Despesa</option>
+        </select>
+        <input id="categoria" placeholder="Categoria" />
+        <input id="nota" placeholder="Observação (opcional)" />
+        <button onclick="adicionarTransacao()">Adicionar</button>
+      </div>
     </section>
 
+    <!-- DESPESAS -->
     <section id="despesas" class="tab">
-      <h2>Despesas do Ano</h2>
+      <h2>Despesas</h2>
       <canvas id="graficoAnual"></canvas>
     </section>
 
+    <!-- CONFIG -->
     <section id="config" class="tab">
       <h2>Configurações</h2>
       <p>Em desenvolvimento</p>
@@ -74,6 +96,6 @@
   </main>
 </div>
 
-<script src="app.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
